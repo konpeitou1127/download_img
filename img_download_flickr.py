@@ -16,7 +16,7 @@ def main():
     args = parser.parse_args()
 
     url = 'https://api.flickr.com/services/rest/'
-    api_key = '2ffa4990aeadd35baca7fba929940ae1'
+    api_key = ''
     query = args.query
     page_num = args.num
 
