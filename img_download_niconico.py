@@ -9,6 +9,8 @@ from http.cookiejar import CookieJar
 import pprint
 import json
 from bs4 import BeautifulSoup
+import os
+import argparse
 
 # ニコニコの認証処理をするメソッド
 def authenticate(mail_add, passwd):
@@ -78,14 +80,14 @@ def main():
     args = parser.parse_args()
     mail_add = ''
     passwd = ''
+    query = args.query
+    num = args.num
 
     output_path = os.path.realpath(args.output + query)
     if os.path.exists(output_path) is False:
         os.mkdir(output_path)
 
     opener = authenticate(mail_add, passwd)
-    query = args.query
-    num = args.num
     img_url_list = search(query, num, opener)
 
     get_img(img_url_list, opener, output_path)
