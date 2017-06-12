@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
-import json
 import requests
 import argparse
 import os
 
-def main():
 
+def main():
+    """Download image  use flicker api."""
     parser = argparse.ArgumentParser(
         description='download image from flicker')
     parser.add_argument('query', help='search word')
@@ -16,7 +16,7 @@ def main():
     args = parser.parse_args()
 
     url = 'https://api.flickr.com/services/rest/'
-    api_key = ''
+    api_key = 'your api key'
     query = args.query
     page_num = args.num
 
@@ -35,8 +35,8 @@ def main():
         'format': 'json',
         'nojsoncallback': '1'}
 
-    proxy = {'http': 'http://proxy.nagaokaut.ac.jp:8080',
-             'https': 'http://proxy.nagaokaut.ac.jp:8080'}
+    proxy = {'http': 'http://proxy.example.co.jp:xxxx',
+             'https': 'http://proxy.example.co.jp:xxxx'}
     r = requests.get(url, params=payload, proxies=proxy)
 
     search_data = r.json()

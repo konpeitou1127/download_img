@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 '''
-ニコニコから画像をダウンロードしてくるスクリプト
 '''
 
 from urllib.request import build_opener, HTTPCookieProcessor, ProxyHandler
@@ -12,10 +11,11 @@ from bs4 import BeautifulSoup
 import os
 import argparse
 
-# ニコニコの認証処理をするメソッド
+
 def authenticate(mail_add, passwd):
-    proxy = ProxyHandler({'http': 'http://proxy.nagaokaut.ac.jp:8080',
-                          'https': 'http://proxy.nagaokaut.ac.jp:8080'})
+    """Activate nicovideo."""
+    proxy = ProxyHandler({'http': 'http://proxy.example.co.jp:xxxx',
+                          'https': 'http://proxy.example.xo.jp:xxxx'})
     post = {
         'mail_tel': mail_add,
         'password': passwd
@@ -32,8 +32,9 @@ def authenticate(mail_add, passwd):
     else:
         return opener
 
-# クエリから画像のIDを検索
+
 def search(query, get_num, opener):
+    """Search image by query."""
     url = 'http://api.search.nicovideo.jp/api/v2/illust/contents/search?'
     offset = 0
     payload = {
@@ -50,15 +51,16 @@ def search(query, get_num, opener):
 
     img_url_list = []
     for id in search_data['data']:
-        img_url = 'http://seiga.nicovideo.jp/image/source?id={}'.format(id['contentId'][2:])
+        img_url = 'http://seiga.nicovideo.jp/image/source?id={}'.format(
+            id['contentId'][2:])
         img_url_list.append(img_url)
 
     return img_url_list
 
-# 画像のダウンロード
+
 def get_img(img_url_list, opener, output_path):
+    """Download Image."""
     cnt = 0
-    result = []
     for i in img_url_list:
         raw_url = opener.open(i)
         soup = BeautifulSoup(raw_url.read().decode('utf-8'), 'html.parser')
@@ -71,7 +73,9 @@ def get_img(img_url_list, opener, output_path):
 
         cnt += 1
 
+
 def main():
+    """Main method."""
     parser = argparse.ArgumentParser(
         description='download image from flicker')
     parser.add_argument('query', help='search word')
@@ -91,6 +95,7 @@ def main():
     img_url_list = search(query, num, opener)
 
     get_img(img_url_list, opener, output_path)
+
 
 if __name__ == '__main__':
     main()
